@@ -10,6 +10,8 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.uas.databinding.ActivityMakananBinding
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.core.View
 
 class MakananActivity : AppCompatActivity() {
 
@@ -21,7 +23,6 @@ class MakananActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMakananBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        0
 
         firestore = FirebaseFirestore.getInstance()
 
@@ -40,6 +41,8 @@ class MakananActivity : AppCompatActivity() {
             }
         }
     }
+
+
     private fun fetchDataAndObserve() {
 
         try {

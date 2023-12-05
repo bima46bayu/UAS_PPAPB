@@ -9,9 +9,12 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.uas.Makanan
+import com.example.uas.MakananActivity
 import com.example.uas.R
+import com.example.uas.TambahMakananActivity
 import com.google.firebase.firestore.FirebaseFirestore
 
 class MakananAdapter : RecyclerView.Adapter<MakananAdapter.MakananViewHolder>() {
@@ -41,7 +44,17 @@ class MakananAdapter : RecyclerView.Adapter<MakananAdapter.MakananViewHolder>() 
                 }
             )
         }
+
+        holder.itemView.setOnClickListener {
+            val intent = Intent(holder.itemView.context, TambahMakananActivity::class.java)
+            intent.putExtra("nama_makanan", currentMakanan.makanan)
+            intent.putExtra("jumlah_kalori", currentMakanan.kalori)
+            holder.itemView.context.startActivity(intent)
+        }
+
+        // ... (kode lainnya)
     }
+
 
     private fun deleteMakanan(id: String, holder: MakananViewHolder) {
         makananCollection.document(id)
@@ -92,6 +105,8 @@ class MakananAdapter : RecyclerView.Adapter<MakananAdapter.MakananViewHolder>() 
         val alertDialog = alertDialogBuilder.create()
         alertDialog.show()
     }
+
+
 
     private fun showToast(message: String, holder: MakananViewHolder) {
         Toast.makeText(holder.itemView.context, message, Toast.LENGTH_SHORT).show()
