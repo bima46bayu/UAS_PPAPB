@@ -49,13 +49,14 @@ class KaloriAdapter : RecyclerView.Adapter<KaloriAdapter.KaloriViewHolder>() {
             )
         }
 
-//        holder.itemView.setOnClickListener {
-//            val intent = Intent(holder.itemView.context, TambahMakananActivity::class.java)
-//            intent.putExtra("nama_makanan", currentKalori.nama_makanan)
-//            intent.putExtra("jumlah_kalori", currentKalori.jumlah_kalori)
-//            intent.putExtra("waktu_makan", currentKalori.waktu)
-//            holder.itemView.context.startActivity(intent)
-//        }
+        holder.itemView.setOnClickListener {
+            val intent = Intent(holder.itemView.context, TambahMakananActivity::class.java)
+            intent.putExtra("id_makanan", currentKalori.id)
+            intent.putExtra("nama_makanan", currentKalori.nama_makanan)
+            intent.putExtra("jumlah_kalori", currentKalori.jumlah_kalori)
+            intent.putExtra("waktu_makan", currentKalori.waktu)
+            holder.itemView.context.startActivity(intent)
+        }
 
         // ... (kode lainnya)
     }

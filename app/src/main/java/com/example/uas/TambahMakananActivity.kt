@@ -29,25 +29,34 @@ class TambahMakananActivity : AppCompatActivity() {
         binding.addETMakanan.setText(namaMakanan)
         binding.addETKalori.setText(jumlahKalori)
 
-        // Setting time listener
+        // ...
+
+// Setting time listener
         val timeSetListener = TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
             // Handle waktu yang dipilih di sini
             selectedTime = "$hourOfDay:$minute"
             binding.addTVWaktu.text = selectedTime
         }
+// Menambahkan OnClickListener ke TextView
+        binding.addTVWaktu.setOnClickListener {
+            // Membuat instance dari Calendar untuk mendapatkan waktu saat ini
+            val c = Calendar.getInstance()
+            val currentHour = c.get(Calendar.HOUR_OF_DAY)
+            val currentMinute = c.get(Calendar.MINUTE)
 
-        val c = Calendar.getInstance()
-        val currentHour = c.get(Calendar.HOUR_OF_DAY)
-        val currentMinute = c.get(Calendar.MINUTE)
+            // Membuat TimePickerDialog
+            val timePickerDialog = TimePickerDialog(
+                this,
+                timeSetListener,
+                currentHour,
+                currentMinute,
+                false
+            )
 
-        val timePickerDialog = TimePickerDialog(
-            this,
-            timeSetListener,
-            currentHour,
-            currentMinute,
-            false
-        )
-        timePickerDialog.show()
+            // Menampilkan dialog pemilih waktu
+            timePickerDialog.show()
+        }
+
 
         binding.addBTTambah.setOnClickListener {
             // Simpan data ke Firestore
