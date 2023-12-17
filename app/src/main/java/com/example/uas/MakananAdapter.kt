@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Filter
+import android.widget.Filterable
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -17,7 +19,7 @@ import com.example.uas.R
 import com.example.uas.TambahMakananActivity
 import com.google.firebase.firestore.FirebaseFirestore
 
-class MakananAdapter : RecyclerView.Adapter<MakananAdapter.MakananViewHolder>() {
+class MakananAdapter(originalMakanan: List<Makanan>) : RecyclerView.Adapter<MakananAdapter.MakananViewHolder>(), Filterable {
 
     private var makanan: List<Makanan> = listOf()
     private val firestore = FirebaseFirestore.getInstance()
@@ -106,10 +108,46 @@ class MakananAdapter : RecyclerView.Adapter<MakananAdapter.MakananViewHolder>() 
         alertDialog.show()
     }
 
+    fun updateData(makanans: List<Makanan>) {
+        this.makanan = makanans.toMutableList()
+        notifyDataSetChanged()
+    }
+
 
 
     private fun showToast(message: String, holder: MakananViewHolder) {
         Toast.makeText(holder.itemView.context, message, Toast.LENGTH_SHORT).show()
     }
+
+    override fun getFilter(): Filter {
+        return object : Filter() {
+            override fun performFiltering(constraint: CharSequence?): FilterResults {
+                val filteredList = ArrayList<Makanan>()
+
+                if (constraint == null || constraint.isEmpty()) {
+                    filteredList.addAll(makanan)
+                } else {
+                    val filterPattern = constraint.toString().toLowerCase().trim()
+
+                    for (item in makanan) {
+                        if (item.makanan.toLowerCase().contains(filterPattern)) {
+                            filteredList.add(item)
+                        }
+                    }
+                }
+
+                val results = FilterResults()
+                results.values = filteredList
+                return results
+            }
+
+            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+                @Suppress("UNCHECKED_CAST")
+                makanan = results?.values as MutableList<Makanan>
+                notifyDataSetChanged()
+            }
+        }
+    }
+
 
 }
