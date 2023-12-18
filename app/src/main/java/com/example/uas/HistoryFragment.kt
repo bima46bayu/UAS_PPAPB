@@ -54,7 +54,7 @@ class HistoryFragment : Fragment() {
     }
 
     private fun navigateToAddMakanan() {
-        val intent = Intent(requireContext(), AddMakananActivity::class.java)
+        val intent = Intent(requireContext(), MakananActivity::class.java)
         startActivity(intent)
     }
 
