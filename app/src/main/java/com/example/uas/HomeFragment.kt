@@ -45,14 +45,19 @@ class HomeFragment : Fragment() {
 
                 // Hitung total kalori untuk hari itu
                 var totalKalori = 0
+                var sisaKalori = 0
                 for (kalori in kaloriList) {
                     // Konversi jumlah_kalori menjadi integer dan tambahkan ke total
                     totalKalori += kalori.jumlah_kalori.toInt()
+                    sisaKalori = 2000 - totalKalori
                 }
 
                 // Tampilkan total kalori di dalam TextView
                 val textViewTotalKalori: TextView = binding.textViewKalori
                 textViewTotalKalori.text = "$totalKalori"
+
+                val textViewSisaKalori: TextView = binding.textViewSisaKalori
+                textViewSisaKalori.text = "$sisaKalori"
             }
             .addOnFailureListener { exception ->
                 // Penanganan kesalahan, misalnya, tampilkan pesan kesalahan
