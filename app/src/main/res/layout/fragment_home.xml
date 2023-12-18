@@ -18,6 +18,7 @@
             android:text="Home" />
 
         <TextView
+            android:id="@+id/textViewKalori"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="0"

@@ -8,6 +8,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.uas.databinding.ActivityTambahMakananBinding
 import com.google.firebase.firestore.FirebaseFirestore
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class TambahMakananActivity : AppCompatActivity() {
 
@@ -71,12 +73,14 @@ class TambahMakananActivity : AppCompatActivity() {
     private fun simpanDataFirestore(namaMakanan: String?, jumlahKalori: String?, waktu: String) {
         // Mendapatkan referensi ke koleksi "kalori"
         val collectionRef = db.collection("kalori")
+        val currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Calendar.getInstance().time)
 
         // Menyimpan data ke dalam Firestore
         val dataMakanan = hashMapOf(
             "nama_makanan" to namaMakanan,
             "jumlah_kalori" to jumlahKalori,
-            "waktu" to waktu
+            "waktu" to waktu,
+            "tanggal" to currentDate // Tambahkan tanggal saat menyimpan data
         )
 
         collectionRef
@@ -92,6 +96,7 @@ class TambahMakananActivity : AppCompatActivity() {
                 showToast(pesan)
             }
     }
+
 
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()

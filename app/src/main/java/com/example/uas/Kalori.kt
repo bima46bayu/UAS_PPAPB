@@ -6,8 +6,9 @@ data class Kalori(
     @set:Exclude @get:Exclude @Exclude var id : String = "",
     var nama_makanan: String = "",
     var jumlah_kalori: String = "",
-    var waktu: String
+    var waktu: String,
+    var tanggal: String = ""
 ) {
     // Konstruktor tanpa argumen diperlukan oleh Firebase Firestore
-    constructor() : this("", "", "", "")
+    constructor() : this("", "", "", "", "")
 }
