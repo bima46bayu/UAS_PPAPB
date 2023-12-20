@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.uas.databinding.ActivityLoginBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 
 class LoginActivity : AppCompatActivity() {
@@ -28,9 +29,7 @@ class LoginActivity : AppCompatActivity() {
 
         // If already logged in, redirect to the main page
         if (sessionManager.isLoggedIn()) {
-            val intent = Intent(this@LoginActivity, MainActivity::class.java)
-            startActivity(intent)
-            finish()
+            redirectToAppropriatePage()
         }
 
         // Implement login
@@ -69,10 +68,47 @@ class LoginActivity : AppCompatActivity() {
         sessionManager.setLogin(true)
         sessionManager.saveUserData(email, password)
 
-        // Redirect to the main page
-        val intent = Intent(this@LoginActivity, MainActivity::class.java)
-        startActivity(intent)
-        finish()
+        // Redirect to the appropriate page
+        redirectToAppropriatePage()
+    }
+
+    private fun redirectToAppropriatePage() {
+        val currentUser = auth.currentUser
+
+        if (currentUser != null) {
+            checkAdminAccess(currentUser.uid)
+        } else {
+            showToast("Gagal mendapatkan informasi pengguna")
+        }
+    }
+
+    private fun checkAdminAccess(uid: String) {
+        val userRef = FirebaseFirestore.getInstance().collection("users").document(uid)
+
+        userRef.get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    val role = document.getString("role")
+
+                    if (role == "admin") {
+                        // Pengguna adalah admin, arahkan ke AdminMakananActivity
+                        val intent = Intent(this@LoginActivity, AdminMakananActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    } else {
+                        // Pengguna bukan admin, arahkan ke MainActivity
+                        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }
+                } else {
+                    showToast("Gagal memeriksa peran admin")
+                }
+            }
+            .addOnFailureListener { e ->
+                showToast("Gagal memeriksa peran admin")
+                e.printStackTrace()
+            }
     }
 
     private fun showToast(message: String) {

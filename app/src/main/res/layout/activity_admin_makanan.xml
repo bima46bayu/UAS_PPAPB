@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MakananActivity"
+    android:padding="16dp">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/searchMakanan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="-88dp"
+            android:hint="Cari makanan" />
+
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewMakanan"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="8dp" />
+
+    <Button
+        android:id="@+id/btnCustomMakanan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Masukkan makanan custom" />
+
+    <Button
+        android:id="@+id/btnLogoutAdmin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Logout dari admin" />
+
+</LinearLayout>

@@ -15,6 +15,9 @@
         android:theme="@style/Theme.UAS"
         tools:targetApi="31">
         <activity
+            android:name=".AdminMakananActivity"
+            android:exported="false" />
+        <activity
             android:name=".TambahMakananActivity"
             android:exported="false" />
         <activity
