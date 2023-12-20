@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.example.uas.databinding.FragmentHomeBinding
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 class HomeFragment : Fragment() {
@@ -30,40 +31,50 @@ class HomeFragment : Fragment() {
     }
 
     private fun hitungDanTampilkanKaloriHarian() {
-        // Mendapatkan data Kalori dari Firestore
-        db.collection("kalori")
-            .get()
-            .addOnSuccessListener { documents ->
-                val kaloriList = mutableListOf<Kalori>()
-                for (document in documents) {
-                    val kalori = document.toObject(Kalori::class.java)
-                    kaloriList.add(kalori)
+        // Mendapatkan ID pengguna yang sedang masuk
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        val userUid = currentUser?.uid
+
+        if (userUid != null) {
+            // Mendapatkan data Kalori dari Firestore berdasarkan ID pengguna
+            db.collection("kalori")
+                .whereEqualTo("userId", userUid)
+                .get()
+                .addOnSuccessListener { documents ->
+                    val kaloriList = mutableListOf<Kalori>()
+                    for (document in documents) {
+                        val kalori = document.toObject(Kalori::class.java)
+                        kaloriList.add(kalori)
+                    }
+
+                    // Sekarang, Anda memiliki daftar Kalori dari koleksi "kalori"
+                    // Selanjutnya, Anda dapat menggunakan daftar tersebut untuk perhitungan atau tampilan
+
+                    // Hitung total kalori untuk hari itu
+                    var totalKalori = 0
+                    var sisaKalori = 0
+                    for (kalori in kaloriList) {
+                        // Konversi jumlah_kalori menjadi integer dan tambahkan ke total
+                        totalKalori += kalori.jumlah_kalori.toInt()
+                        sisaKalori = 2000 - totalKalori
+                    }
+
+                    // Tampilkan total kalori di dalam TextView
+                    val textViewTotalKalori: TextView = binding.textViewKalori
+                    textViewTotalKalori.text = "$totalKalori"
+
+                    val textViewSisaKalori: TextView = binding.textViewSisaKalori
+                    textViewSisaKalori.text = "$sisaKalori"
                 }
-
-                // Sekarang, Anda memiliki daftar Kalori dari koleksi "kalori"
-                // Selanjutnya, Anda dapat menggunakan daftar tersebut untuk perhitungan atau tampilan
-
-                // Hitung total kalori untuk hari itu
-                var totalKalori = 0
-                var sisaKalori = 0
-                for (kalori in kaloriList) {
-                    // Konversi jumlah_kalori menjadi integer dan tambahkan ke total
-                    totalKalori += kalori.jumlah_kalori.toInt()
-                    sisaKalori = 2000 - totalKalori
+                .addOnFailureListener { exception ->
+                    // Penanganan kesalahan, misalnya, tampilkan pesan kesalahan
+                    showToast("Error getting documents: $exception")
                 }
-
-                // Tampilkan total kalori di dalam TextView
-                val textViewTotalKalori: TextView = binding.textViewKalori
-                textViewTotalKalori.text = "$totalKalori"
-
-                val textViewSisaKalori: TextView = binding.textViewSisaKalori
-                textViewSisaKalori.text = "$sisaKalori"
-            }
-            .addOnFailureListener { exception ->
-                // Penanganan kesalahan, misalnya, tampilkan pesan kesalahan
-                showToast("Error getting documents: $exception")
-            }
+        } else {
+            showToast("User not logged in")
+        }
     }
+
 
     private fun showToast(message: String) {
         // Implementasi showToast sesuai kebutuhan aplikasi Anda

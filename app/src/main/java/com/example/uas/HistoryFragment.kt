@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.uas.databinding.FragmentHistoryBinding
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.util.*
@@ -60,31 +61,43 @@ class HistoryFragment : Fragment() {
 
     private fun fetchDataAndObserve() {
         try {
-            val kaloriCollection = firestore.collection("kalori")
-            // Observe Firestore changes
-            kaloriCollection.addSnapshotListener { snapshot, exception ->
-                if (exception != null) {
-                    showToast("Error fetching data from Firestore")
-                    return@addSnapshotListener
-                }
+            val currentUser = FirebaseAuth.getInstance().currentUser
+            val userUid = currentUser?.uid
 
-                snapshot?.let { documents ->
-                    val kaloris = mutableListOf<Kalori>()
-                    for (document in documents) {
-                        val kaloriId = document.id
-                        val kalori = document.toObject(Kalori::class.java).copy(id = kaloriId)
-                        kaloris.add(kalori)
+            if (userUid != null) {
+                val kaloriCollection = firestore.collection("kalori")
+
+                // Tambahkan filter berdasarkan UID pengguna
+                val query = kaloriCollection.whereEqualTo("userId", userUid)
+
+                // Observe Firestore changes
+                query.addSnapshotListener { snapshot, exception ->
+                    if (exception != null) {
+                        showToast("Error fetching data from Firestore")
+                        return@addSnapshotListener
                     }
 
-                    // Update the UI with the Firestore data
-                    kaloriAdapter.setKalori(kaloris)
+                    snapshot?.let { documents ->
+                        val kaloris = mutableListOf<Kalori>()
+                        for (document in documents) {
+                            val kaloriId = document.id
+                            val kalori = document.toObject(Kalori::class.java).copy(id = kaloriId)
+                            kaloris.add(kalori)
+                        }
+
+                        // Update the UI with the Firestore data
+                        kaloriAdapter.setKalori(kaloris)
+                    }
                 }
+            } else {
+                showToast("User not logged in")
             }
         } catch (e: Exception) {
             showToast(e.toString())
             Log.d("ERRORKU", e.toString())
         }
     }
+
 
     private fun resetDataKaloriJikaPerlu() {
         val currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Calendar.getInstance().time)
