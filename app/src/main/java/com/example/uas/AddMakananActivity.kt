@@ -1,41 +1,43 @@
 package com.example.uas
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.room.Room
+import com.example.uas.AppDatabase
+import com.example.uas.MakananActivity
+import com.example.uas.MakananDao
+import com.example.uas.MakananEntity
 import com.example.uas.databinding.ActivityAddMakananBinding
-import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import java.util.UUID
 
 class AddMakananActivity : AppCompatActivity() {
 
-
     private lateinit var binding: ActivityAddMakananBinding
-    private val firestore = FirebaseFirestore.getInstance()
-    private val makananCollection  = firestore.collection("makanan")
+    private lateinit var makananDao: MakananDao
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddMakananBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        with(binding){
-            addBTTambah.setOnClickListener{
-                var makanan = addETMakanan.text.toString()
-                var kalori = addETKalori.text.toString()
+        val database = AppDatabase.getDatabase(this@AddMakananActivity)
+        makananDao = database!!.makananDao()!!
 
+        with(binding) {
+            addBTTambah.setOnClickListener {
+                val makanan = addETMakanan.text.toString()
+                val kalori = addETKalori.text.toString()
 
-                if (makanan == "" || kalori == "" ){
-                    showToast("Cant Empty Data!")
-                }
-                else{
-                    add(
-                        Makanan(
-                            makanan = makanan,
-                            kalori = kalori
-                        )
-                    )
+                if (makanan.isEmpty() || kalori.isEmpty()) {
+                    showToast("Can't Empty Data!")
+                } else {
+                    val makananEntity = MakananEntity(id = 0, makanan = makanan, kalori = kalori)
+                    insertMakanan(makananEntity)
                     showToast("INSERTED!")
 
                     val intent = Intent(this@AddMakananActivity, MakananActivity::class.java)
@@ -45,10 +47,9 @@ class AddMakananActivity : AppCompatActivity() {
         }
     }
 
-    private fun add(makanan: Makanan){
-        makananCollection.add(makanan).addOnFailureListener { e ->
-            Log.d("AddMakananActivity", "Error adding makanan", e)
-            showToast(e.toString())
+    private fun insertMakanan(makananEntity: MakananEntity) {
+        GlobalScope.launch(Dispatchers.IO) {
+            makananDao.insert(makananEntity)
         }
     }
 

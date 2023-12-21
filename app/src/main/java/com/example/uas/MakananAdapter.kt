@@ -1,7 +1,6 @@
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,10 +10,8 @@ import android.widget.Filterable
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.uas.Makanan
-import com.example.uas.MakananActivity
 import com.example.uas.R
 import com.example.uas.TambahMakananActivity
 import com.google.firebase.firestore.FirebaseFirestore
@@ -81,7 +78,7 @@ class MakananAdapter(originalMakanan: List<Makanan>) : RecyclerView.Adapter<Maka
         return makanan.size
     }
 
-    fun setMakanan(makanan: List<Makanan>) {
+    fun setMakanan(makanan: MutableList<Makanan>) {
         this.makanan = makanan
         notifyDataSetChanged()
     }

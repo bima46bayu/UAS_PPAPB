@@ -9,7 +9,6 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.uas.databinding.ActivityAdminMakananBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -43,7 +42,7 @@ class AdminMakananActivity : AppCompatActivity() {
 
         with(binding) {
             btnCustomMakanan.setOnClickListener {
-                val intent = Intent(this@AdminMakananActivity, AdminMakananActivity::class.java)
+                val intent = Intent(this@AdminMakananActivity, AddMakananActivity::class.java)
                 startActivity(intent)
             }
 
