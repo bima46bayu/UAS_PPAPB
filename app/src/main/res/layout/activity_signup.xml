@@ -26,21 +26,28 @@
             android:id="@+id/signup_et_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="email"/>
+            android:hint="email"
+            android:background="@drawable/cardstyle3"
+            android:padding="16dp"/>
 
         <EditText
             android:id="@+id/signup_et_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="password"/>
+            android:hint="password"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/cardstyle3"
+            android:padding="16dp"/>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:layout_marginTop="40dp"
             android:id="@+id/signup_bt_signup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Sign Up"
-            android:textAllCaps="false"/>
+            android:textAllCaps="false"
+            android:background="@drawable/cardstyle5"
+            android:padding="16dp"/>
 
         <TextView
             android:textAlignment="center"

@@ -28,7 +28,9 @@
             android:layout_marginTop="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Makanan"/>
+            android:hint="Makanan"
+            android:background="@drawable/cardstyle3"
+            android:padding="16dp"/>
 
         <EditText
             android:id="@+id/addETKalori"
@@ -36,18 +38,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Kalori"
-            android:inputType="number"/>
+            android:inputType="number"
+            android:background="@drawable/cardstyle3"
+            android:padding="16dp"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@drawable/cardstyle3"
+            android:padding="8dp"
+            android:layout_marginTop="12dp">
 
             <TextView
                 android:layout_marginTop="16dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Waktu Makan"
-                android:textSize="24dp"/>
+                android:textSize="16sp"/>
 
             <TextView
                 android:id="@+id/addTVWaktu"
@@ -55,19 +62,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Waktu"
-                android:textSize="24dp"
+                android:textSize="16sp"
                 android:layout_alignParentEnd="true"/>
 
         </RelativeLayout>
 
 
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:layout_marginTop="30dp"
             android:id="@+id/addBTTambah"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Tambah"
-            android:textAllCaps="false"/>
+            android:textAllCaps="false"
+            android:background="@drawable/cardstyle5"
+            android:padding="16dp"/>
     </LinearLayout>
 </LinearLayout>

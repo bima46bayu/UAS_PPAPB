@@ -44,6 +44,7 @@ class MakananActivity : AppCompatActivity() {
 
         // Fetch and observe buku data from Firestore
         fetchDataAndObserve()
+        fetchRoomDataAndObserve()
 
         with(binding) {
             btnCustomMakanan.setOnClickListener {

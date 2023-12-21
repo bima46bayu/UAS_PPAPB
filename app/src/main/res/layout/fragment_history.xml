@@ -18,7 +18,7 @@
             android:id="@+id/btnAddMakanan"
             android:text="Tambah Makanan"
             android:textColor="@color/white"
-            android:background="@drawable/cardstyle2"/>
+            android:background="@drawable/cardstyle5"/>
 
         <ScrollView
             android:layout_width="match_parent"

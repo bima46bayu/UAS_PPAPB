@@ -26,22 +26,28 @@
             android:id="@+id/login_et_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="email"/>
+            android:hint="email"
+            android:background="@drawable/cardstyle3"
+            android:padding="16dp"/>
 
         <EditText
             android:id="@+id/login_et_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="password"/>
+            android:hint="password"
+            android:background="@drawable/cardstyle3"
+            android:padding="16dp"
+            android:layout_marginTop="12dp"/>
 
-        <Button
-
+        <androidx.appcompat.widget.AppCompatButton
             android:layout_marginTop="40dp"
             android:id="@+id/login_bt_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Login"
-            android:textAllCaps="false"/>
+            android:textAllCaps="false"
+            android:background="@drawable/cardstyle5"
+            android:padding="16dp"/>
 
         <TextView
             android:layout_marginTop="16dp"

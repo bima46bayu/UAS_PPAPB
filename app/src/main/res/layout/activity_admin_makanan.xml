@@ -15,28 +15,35 @@
             android:id="@+id/searchMakanan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="-88dp"
-            android:hint="Cari makanan" />
+            android:hint="Cari makanan"
+            android:background="@drawable/cardstyle3"
+            android:padding="16dp"/>
 
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="12dp"
         android:id="@+id/recyclerViewMakanan"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:padding="8dp" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnCustomMakanan"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Masukkan makanan custom" />
+        android:text="Masukkan makanan custom"
+        android:background="@drawable/cardstyle5"
+        android:padding="16dp"/>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_marginTop="12dp"
         android:id="@+id/btnLogoutAdmin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Logout dari admin" />
+        android:text="Logout dari admin"
+        android:background="@drawable/cardstyle4"
+        android:padding="16dp"/>
 
 </LinearLayout>
