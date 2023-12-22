@@ -42,7 +42,7 @@ class AdminMakananActivity : AppCompatActivity() {
 
         with(binding) {
             btnCustomMakanan.setOnClickListener {
-                val intent = Intent(this@AdminMakananActivity, AddMakananActivity::class.java)
+                val intent = Intent(this@AdminMakananActivity, AddMakananAdminActivity::class.java)
                 startActivity(intent)
             }
 

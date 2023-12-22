@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="16dp"
+    android:orientation="vertical"
+    tools:context=".AddMakananAdminActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="16dp">
+
+        <TextView
+            android:id="@+id/homepageTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tambah Makanan Admin"
+            android:textSize="30sp"
+            />
+
+        <EditText
+            android:id="@+id/addETMakanan"
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Makanan"
+            android:background="@drawable/cardstyle3"
+            android:padding="16dp"/>
+
+        <EditText
+            android:id="@+id/addETKalori"
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Kalori"
+            android:inputType="number"
+            android:background="@drawable/cardstyle3"
+            android:padding="16dp"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_marginTop="30dp"
+            android:id="@+id/addBTTambah"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tambah"
+            android:textAllCaps="false"
+            android:background="@drawable/cardstyle5"
+            android:padding="16dp"/>
+    </LinearLayout>
+</LinearLayout>

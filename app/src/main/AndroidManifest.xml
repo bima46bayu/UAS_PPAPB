@@ -5,7 +5,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
-
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -16,10 +15,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.UAS"
         tools:targetApi="31">
+        <activity
+            android:name=".AddMakananAdminActivity"
+            android:exported="false" />
+
         <receiver
             android:name=".NotifReceiver"
             android:enabled="true"
-            android:exported="true"></receiver>
+            android:exported="true" />
+
         <activity
             android:name=".AdminMakananActivity"
             android:exported="false" />
