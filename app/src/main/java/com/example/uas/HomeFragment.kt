@@ -1,5 +1,7 @@
 package com.example.uas
 
+
+import androidx.core.app.NotificationManagerCompat
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
@@ -17,7 +19,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 class HomeFragment : Fragment() {
-
     private lateinit var binding: FragmentHomeBinding
     private val db = FirebaseFirestore.getInstance()
     private val channelId = "KaloriChannel"
@@ -34,8 +35,50 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Tampilkan notifikasi saat membuka aplikasi
+        showNotificationOnAppOpen()
+
         // Panggil metode untuk menghitung dan menampilkan kalori harian
         hitungDanTampilkanKaloriHarian()
+    }
+
+    private fun showNotificationOnAppOpen() {
+        // Mendapatkan ID pengguna yang sedang masuk
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        val userUid = currentUser?.uid
+
+        if (userUid != null) {
+            // Mendapatkan data Kalori dari Firestore berdasarkan ID pengguna
+            db.collection("kalori")
+                .whereEqualTo("userId", userUid)
+                .get()
+                .addOnSuccessListener { documents ->
+                    val kaloriList = mutableListOf<Kalori>()
+                    for (document in documents) {
+                        val kalori = document.toObject(Kalori::class.java)
+                        kaloriList.add(kalori)
+                    }
+
+                    // Hitung total kalori untuk hari itu
+                    var totalKalori = 0
+                    for (kalori in kaloriList) {
+                        // Konversi jumlah_kalori menjadi integer dan tambahkan ke total
+                        totalKalori += kalori.jumlah_kalori.toInt()
+                    }
+
+                    // Hitung sisa kalori
+                    val sisaKalori = 2000 - totalKalori
+
+                    // Tampilkan notifikasi berdasarkan kondisi sisa kalori saat membuka aplikasi
+                    showNotification(sisaKalori)
+                }
+                .addOnFailureListener { exception ->
+                    // Penanganan kesalahan, misalnya, tampilkan pesan kesalahan
+                    showToast("Error getting documents: $exception")
+                }
+        } else {
+            showToast("User not logged in")
+        }
     }
 
     private fun hitungDanTampilkanKaloriHarian() {
@@ -61,18 +104,18 @@ class HomeFragment : Fragment() {
                     for (kalori in kaloriList) {
                         // Konversi jumlah_kalori menjadi integer dan tambahkan ke total
                         totalKalori += kalori.jumlah_kalori.toInt()
-                        sisaKalori = 2000 - totalKalori
                     }
 
-                    // Tampilkan total kalori di dalam TextView
+                    // Hitung sisa kalori
+                    sisaKalori = 2000 - totalKalori
+
+                    // Tampilkan total kalori dan sisa kalori di dalam TextView
                     val textViewTotalKalori: TextView = binding.textViewKalori
                     textViewTotalKalori.text = "$totalKalori"
 
                     val textViewSisaKalori: TextView = binding.textViewSisaKalori
                     textViewSisaKalori.text = "$sisaKalori"
 
-                    // Tampilkan notifikasi berdasarkan kondisi sisa kalori
-                    showNotification(sisaKalori)
                 }
                 .addOnFailureListener { exception ->
                     // Penanganan kesalahan, misalnya, tampilkan pesan kesalahan
@@ -105,6 +148,9 @@ class HomeFragment : Fragment() {
             notificationManager.notify(notificationId, builder.build())
         }
     }
+
+
+
 
     private fun getNotificationText(sisaKalori: Int): String {
         return when {
