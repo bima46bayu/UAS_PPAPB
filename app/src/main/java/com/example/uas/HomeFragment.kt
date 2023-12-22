@@ -1,7 +1,13 @@
 package com.example.uas
 
-import android.os.Bundle
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.os.Build
+import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
+import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +20,8 @@ class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
     private val db = FirebaseFirestore.getInstance()
+    private val channelId = "KaloriChannel"
+    private val notificationId = 1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,9 +55,6 @@ class HomeFragment : Fragment() {
                         kaloriList.add(kalori)
                     }
 
-                    // Sekarang, Anda memiliki daftar Kalori dari koleksi "kalori"
-                    // Selanjutnya, Anda dapat menggunakan daftar tersebut untuk perhitungan atau tampilan
-
                     // Hitung total kalori untuk hari itu
                     var totalKalori = 0
                     var sisaKalori = 0
@@ -65,6 +70,9 @@ class HomeFragment : Fragment() {
 
                     val textViewSisaKalori: TextView = binding.textViewSisaKalori
                     textViewSisaKalori.text = "$sisaKalori"
+
+                    // Tampilkan notifikasi berdasarkan kondisi sisa kalori
+                    showNotification(sisaKalori)
                 }
                 .addOnFailureListener { exception ->
                     // Penanganan kesalahan, misalnya, tampilkan pesan kesalahan
@@ -75,6 +83,36 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private fun showNotification(sisaKalori: Int) {
+        Log.d("Notification", "Trying to send notification")
+
+        val notificationManager =
+            requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        val builder = NotificationCompat.Builder(requireContext(), channelId)
+            .setSmallIcon(R.drawable.calorie_tracker)
+            .setContentTitle("Status Kalori Harian")
+            .setContentText(getNotificationText(sisaKalori))
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notifChannel = NotificationChannel(channelId, "Notifku", NotificationManager.IMPORTANCE_DEFAULT)
+            with(notificationManager) {
+                createNotificationChannel(notifChannel)
+                notify(notificationId, builder.build())
+            }
+        } else {
+            notificationManager.notify(notificationId, builder.build())
+        }
+    }
+
+    private fun getNotificationText(sisaKalori: Int): String {
+        return when {
+            sisaKalori == 0 -> "Kalori harian terpenuhi!"
+            sisaKalori < 0 -> "Kalori harian terlalu banyak!"
+            else -> "Kalori harian belum terpenuhi. Sisa: $sisaKalori kalori"
+        }
+    }
 
     private fun showToast(message: String) {
         // Implementasi showToast sesuai kebutuhan aplikasi Anda
